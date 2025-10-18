@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Water Intake Calculator</title>
+  <style>
+    /* --- Arctic Blue Fitness Theme (Final & Refactored) --- */
+    :root {
+      /* Color Palette */
+      --background-primary: #161b22;
+      --background-secondary: #0d1117;
+      --accent-primary: #38b6ff;
+      --accent-secondary: #0077b6;
+      --accent-light: #a2d2ff;
+      --text-primary: #f0f6fc;
+      --text-secondary: #8b949e;
+
+      /* RGB versions for rgba() usage */
+      --background-primary-rgb: 22, 27, 34;
+      --background-secondary-rgb: 13, 17, 23;
+      --accent-primary-rgb: 56, 182, 255;
+      --text-secondary-rgb: 139, 148, 158;
+
+      /* UI Variables */
+      --border-color: rgba(var(--text-secondary-rgb), 0.2);
+      --transition-speed: 0.3s ease;
+    }
+
+    /* --- Base --- */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      background: linear-gradient(-45deg, var(--background-secondary), var(--accent-secondary), var(--background-secondary), var(--background-primary));
+      background-size: 400% 400%;
+      animation: gradientBG 20s ease infinite;
+      color: var(--text-primary);
+      margin: 0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    /* --- Typography Enhancements --- */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    /* --- Header --- */
+    .header {
+      background: rgba(var(--background-secondary-rgb), 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      color: var(--accent-light);
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: -0.04em;
+    }
+    
+    /* --- Main Layout --- */
+    .main-content { 
+      display:flex; 
+      justify-content:center; 
+      align-items:center; 
+      min-height:calc(100vh - 80px); /* Adjusted for header height */
+      padding:2rem; 
+    }
+
+    /* --- Container / Card Styling --- */
+    .container {
+      background: rgba(var(--background-primary-rgb), 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2.5rem;
+      width:100%; 
+      max-width:400px; 
+      text-align:center;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      /* Removed transition and transform for static card */
+    }
+
+    /* Removed .container:hover to stop the animation */
+    
+    .container h2 {
+      margin-top:0;
+      margin-bottom: 1.5rem;
+      color: var(--accent-light);
+    }
+    
+    .container form { 
+      display:flex; 
+      flex-direction:column; 
+      gap:1rem; 
+    }
+    
+    /* --- Form Input Styling --- */
+    .container input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      background-color: var(--background-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+      box-sizing: border-box;
+    }
+
+    .container input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 4px rgba(var(--accent-primary-rgb), 0.25);
+    }
+    
+    .container input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+    /* --- Button (Upgraded) --- */
+    .button {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(45deg, var(--accent-secondary) 0%, var(--accent-primary) 100%);
+      color: var(--text-primary);
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 1px solid var(--accent-secondary);
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all var(--transition-speed);
+      outline: none;
+    }
+
+    .button:hover {
+      background: linear-gradient(45deg, var(--accent-primary) 0%, var(--accent-light) 100%);
+      color: var(--background-secondary);
+      box-shadow: 0 6px 20px rgba(var(--accent-primary-rgb), 0.4);
+    }
+    
+    /* --- Result & Links --- */
+    #result { 
+      margin-top:1.5rem; 
+      font-size:1.2rem; 
+      font-weight:bold; 
+      color: var(--accent-primary); 
+      min-height: 1.5em; /* Prevents layout shift */
+    }
+    
+    .container a { 
+      display:block; 
+      margin-top:1rem; 
+      color: var(--text-secondary); 
+      text-decoration:none; 
+      font-size:0.9rem; 
+      transition: color var(--transition-speed);
+    }
+
+
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="#" class="logo">Trackivore</a>
+  </header>
+
+  <div class="main-content">
+    <div class="container">
+      <h2>Water Intake Calculator</h2>
+      <form id="waterForm">
+        <input type="number" id="weightWater" placeholder="Weight (kg)" required>
+        <button type="submit" class="button">Calculate Water</button>
+      </form>
+      <p id="result"></p>
+      <a href="index.php">Go back to HOME</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("waterForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      let weight = parseFloat(document.getElementById("weightWater").value);
+      if (isNaN(weight) || weight <= 0) {
+        document.getElementById("result").textContent = 'Please enter a valid weight.';
+        return;
+      }
+      let water = (weight * 0.033).toFixed(2);
+      document.getElementById("result").textContent = `Recommended Intake: ${water} liters/day`;
+    });
+  </script>
+</body>
+</html>
